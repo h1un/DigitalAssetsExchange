@@ -10,6 +10,9 @@ import java.util.HashMap;
 @SpringBootTest
 class DigitalAssetsExchangeApplicationTests {
 
+    String apiKey = "";
+    String secretKey = "";
+
     @Autowired
     UpbitWebClient upbitWebClient;
 
@@ -25,5 +28,15 @@ class DigitalAssetsExchangeApplicationTests {
         hashMap.put("count" , "1");
         System.out.println(upbitWebClient.getPublic("/v1/trades/ticks",hashMap).block());
     }
+
+    @Test
+    void getPrivate() {
+
+        HashMap<String,Object> hashMap = new HashMap();
+        hashMap.put("market" , "KRW-BTC");
+        System.out.println(upbitWebClient.getPrivate("/v1/accounts",hashMap,apiKey,secretKey).block());
+
+    }
+
 
 }
