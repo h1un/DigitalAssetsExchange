@@ -1,12 +1,11 @@
 package com.digitalassets.exchange.api.upbit;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -38,7 +37,7 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> getPrivate(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> get(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
 
         String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
@@ -53,7 +52,7 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> postPrivate(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> post(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
 
         String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
@@ -68,7 +67,7 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> deletePrivate(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> delete(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
 
         String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
