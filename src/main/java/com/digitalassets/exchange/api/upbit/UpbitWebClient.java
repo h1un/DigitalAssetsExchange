@@ -68,6 +68,22 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
+    public Mono<String> deletePrivate(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+
+        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+
+        String auth = auth(queryString, apiKey, secretKey);
+
+        return webClient.delete()
+                .uri(uri + "?" + queryString)
+                .header("Authorization", auth)
+                .retrieve()
+                .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                        clientResponse -> Mono.empty())
+                .bodyToMono(String.class);
+    }
+
+
     public String auth(String queryString, String apiKey, String secretKey) {
 
         MessageDigest md = null;

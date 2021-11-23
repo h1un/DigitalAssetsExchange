@@ -52,5 +52,15 @@ class DigitalAssetsExchangeApplicationTests {
     }
 
 
+    @Test
+    void deletePrivate() {
+
+        HashMap<String,Object> hashMap = new HashMap();
+        hashMap.put("uuid", "cdd92199-2897-4e14-9448-f923320408ad");
+
+        System.out.println(upbitWebClient.deletePrivate("/v1/order",hashMap,apiKey,secretKey).block());
+
+    }
+
 
 }
