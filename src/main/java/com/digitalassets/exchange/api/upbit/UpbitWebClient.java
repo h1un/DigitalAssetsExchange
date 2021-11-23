@@ -21,9 +21,9 @@ public class UpbitWebClient {
     String SERVER_URL = "https://api.upbit.com";
     WebClient webClient = WebClient.create(SERVER_URL);
 
-    public Mono<String> getPublic(String uri, HashMap<String, Object> hashMap) {
+    public Mono<String> getPublic(String uri, HashMap<String, Object> params) {
 
-        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+        String queryString = params.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
         return webClient.get()
                 .uri(uri + "?" + queryString)
@@ -37,9 +37,9 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> get(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> get(String uri, HashMap<String, Object> params, String apiKey, String secretKey) {
 
-        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+        String queryString = params.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
         String auth = auth(queryString, apiKey, secretKey);
 
@@ -52,9 +52,9 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> post(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> post(String uri, HashMap<String, Object> params, String apiKey, String secretKey) {
 
-        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+        String queryString = params.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
         String auth = auth(queryString, apiKey, secretKey);
 
@@ -67,9 +67,9 @@ public class UpbitWebClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> delete(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+    public Mono<String> delete(String uri, HashMap<String, Object> params, String apiKey, String secretKey) {
 
-        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+        String queryString = params.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
         String auth = auth(queryString, apiKey, secretKey);
 

@@ -1,5 +1,7 @@
 package com.digitalassets.exchange;
 
+import com.digitalassets.exchange.api.Exchange;
+import com.digitalassets.exchange.api.dto.OrderbookParameter;
 import com.digitalassets.exchange.api.upbit.UpbitWebClient;
 import com.sun.tools.javac.Main;
 import lombok.SneakyThrows;
@@ -26,9 +28,9 @@ UpbitWebClient upbitWebClient;
     void getPublic() {
 
         HashMap<String,Object> hashMap = new HashMap();
-        hashMap.put("market" , "KRW-BTC");
+        hashMap.put("markets" , "KRW-BTC");
         hashMap.put("count" , "1");
-        System.out.println(upbitWebClient.getPublic("/v1/trades/ticks",hashMap).block());
+        System.out.println(upbitWebClient.getPublic("/v1/orderbook",hashMap).block());
     }
 
     @Test
@@ -68,18 +70,26 @@ UpbitWebClient upbitWebClient;
     @Test
     void d(){
         try {
-            Class myClass = Class.forName("com.digitalassets.exchange.api.upbit.UpbitService");
+//            Class myClass = Class.forName("com.digitalassets.exchange.api.upbit.UpbitService");
+//
+//            Method method = myClass.getMethod("a", new Class[]{String.class});
+//            System.out.println(method.invoke(myClass.newInstance(), "a"));
 
-            Method method = myClass.getMethod("a", new Class[]{String.class});
-            System.out.println(method.invoke(myClass.newInstance(), "a"));
 
+            String site = "upbit";
 
-            Class myClass2 = Class.forName("com.digitalassets.exchange.api.upbit.UpbitService2");
+            String service = Exchange.getService(site);
+            System.out.println(service);
+            OrderbookParameter orderbookParameter = OrderbookParameter.builder()
+                    .currency("BTC")
+                    .payment("KRW").build();
 
-            Method method2 = myClass2.getMethod("a", HashMap.class);
+            Class myClass2 = Class.forName("com.digitalassets.exchange.api.upbit."+service);
+
+            Method method2 = myClass2.getMethod("getOrderbook", OrderbookParameter.class);
             HashMap<String,Object> hashMap = new HashMap();
 
-            System.out.println(method2.invoke(myClass2.newInstance(), new Object[]{hashMap}));
+            System.out.println(method2.invoke(myClass2.newInstance(),orderbookParameter));
 
 
         } catch (ClassNotFoundException e) {
