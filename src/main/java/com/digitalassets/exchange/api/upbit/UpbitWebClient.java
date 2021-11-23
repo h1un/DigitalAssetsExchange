@@ -1,6 +1,8 @@
 package com.digitalassets.exchange.api.upbit;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -16,9 +18,10 @@ public class UpbitWebClient {
 
         return webClient.get()
                 .uri(uri)
-                .header("Content-Type", "application/json")
-                .retrieve().bodyToMono(String.class);
-
+//                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class);
 
 
     }

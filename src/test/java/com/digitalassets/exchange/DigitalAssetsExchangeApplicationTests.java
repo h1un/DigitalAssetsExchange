@@ -17,7 +17,7 @@ class DigitalAssetsExchangeApplicationTests {
 
     @Test
     void getPublic() {
-        System.out.println(upbitWebClient.getPublic("/v1/market/all"));
+        System.out.println(upbitWebClient.getPublic("/v1/market/all2").block());
     }
 
 }
