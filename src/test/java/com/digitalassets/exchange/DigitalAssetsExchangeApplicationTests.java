@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
+
 @SpringBootTest
 class DigitalAssetsExchangeApplicationTests {
 
@@ -17,7 +19,11 @@ class DigitalAssetsExchangeApplicationTests {
 
     @Test
     void getPublic() {
-        System.out.println(upbitWebClient.getPublic("/v1/market/all2").block());
+
+        HashMap<String,Object> hashMap = new HashMap();
+        hashMap.put("market" , "KRW-BTC");
+        hashMap.put("count" , "1");
+        System.out.println(upbitWebClient.getPublic("/v1/trades/ticks",hashMap).block());
     }
 
 }

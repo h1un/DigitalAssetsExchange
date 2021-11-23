@@ -6,6 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 @Configuration
 public class UpbitWebClient {
 
@@ -13,11 +16,12 @@ public class UpbitWebClient {
     WebClient webClient = WebClient.create(SERVER_URL);
 
 
-    public Mono<String> getPublic(String uri) {
+    public Mono<String> getPublic(String uri, HashMap<String, Object> hashMap) {
 
+        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
 
         return webClient.get()
-                .uri(uri)
+                .uri(uri + "?" + queryString)
 //                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
