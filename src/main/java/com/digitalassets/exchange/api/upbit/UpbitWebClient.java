@@ -21,6 +21,10 @@ public class UpbitWebClient {
 //                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
+                .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+//                        clientResponse -> Mono.error(new RuntimeException())) // Exception 처리
+//                        clientResponse -> clientResponse.bodyToMono(String.class).map(body -> new RuntimeException(body))) //Exception 처리 , Error 내용 출력
+                        clientResponse -> Mono.empty()) // 에러 내지 않고 그대로 받기
                 .bodyToMono(String.class);
 
 
