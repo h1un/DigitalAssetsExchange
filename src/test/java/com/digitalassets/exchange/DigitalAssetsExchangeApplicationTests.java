@@ -38,5 +38,19 @@ class DigitalAssetsExchangeApplicationTests {
 
     }
 
+    @Test
+    void postPrivate() {
+
+        HashMap<String,Object> hashMap = new HashMap();
+        hashMap.put("market", "KRW-BTC");
+        hashMap.put("side", "bid");
+        hashMap.put("volume", "0.001");
+        hashMap.put("price", "70000000");
+        hashMap.put("ord_type", "limit");
+        System.out.println(upbitWebClient.postPrivate("/v1/orders",hashMap,apiKey,secretKey).block());
+
+    }
+
+
 
 }

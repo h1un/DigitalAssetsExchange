@@ -46,7 +46,21 @@ public class UpbitWebClient {
 
         return webClient.get()
                 .uri(uri + "?" + queryString)
-                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization", auth)
+                .retrieve()
+                .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
+                        clientResponse -> Mono.empty())
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> postPrivate(String uri, HashMap<String, Object> hashMap, String apiKey, String secretKey) {
+
+        String queryString = hashMap.entrySet().stream().map(map -> map.getKey() + "=" + map.getValue()).collect(Collectors.joining("&"));
+
+        String auth = auth(queryString, apiKey, secretKey);
+
+        return webClient.post()
+                .uri(uri + "?" + queryString)
                 .header("Authorization", auth)
                 .retrieve()
                 .onStatus(httpStatus -> httpStatus.is4xxClientError() || httpStatus.is5xxServerError(),
