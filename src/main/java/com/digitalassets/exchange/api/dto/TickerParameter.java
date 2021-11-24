@@ -8,7 +8,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class OrderbookParameter {
+public class TickerParameter {
     String currency;
     String payment;
 }

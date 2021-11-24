@@ -2,7 +2,10 @@ package com.digitalassets.exchange;
 
 import com.digitalassets.exchange.api.Exchange;
 import com.digitalassets.exchange.api.ReflectionMethod;
+import com.digitalassets.exchange.api.dto.BalanceParameter;
 import com.digitalassets.exchange.api.dto.OrderbookParameter;
+import com.digitalassets.exchange.api.dto.TickerParameter;
+import com.digitalassets.exchange.api.dto.TradeParameter;
 import com.digitalassets.exchange.api.upbit.UpbitWebClient;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -18,8 +21,8 @@ class DigitalAssetsExchangeApplicationTests {
     UpbitWebClient upbitWebClient;
     @Autowired
     ReflectionMethod reflectionMethod;
-    String apiKey = "";
-    String secretKey = "";
+    String apiKey = "DNkgnGpmm4RuHxmnEZ1Ewer1xkxByMZFn0G7vKA6";
+    String secretKey = "1k3kLy5qigPe4m15aQGYFFt6e5H8Wx8wEgt4h5ih";
 
 
     @Test
@@ -100,13 +103,28 @@ class DigitalAssetsExchangeApplicationTests {
     @Test
     void reflection() {
 
-        OrderbookParameter orderbookParameter = OrderbookParameter.builder()
-                .currency("BTC")
-                .payment("KRW").build();
+//        OrderbookParameter orderbookParameter = OrderbookParameter.builder()
+//                .currency("BTC")
+//                .payment("KRW").build();
+//
+//        System.out.println(reflectionMethod.getOrderbook(orderbookParameter,"upbit"));
+//
+//        TickerParameter tickerParameter = TickerParameter.builder()
+//                .currency("BTC")
+//                .payment("KRW").build();
+//
+//        System.out.println(reflectionMethod.getTicker(tickerParameter,"upbit"));
+//
+//        TradeParameter tradeParameter = TradeParameter.builder()
+//                .currency("BTC")
+//                .payment("KRW").build();
+//
+//        System.out.println(reflectionMethod.getTrade(tradeParameter,"upbit"));
 
-        System.out.println(reflectionMethod.getOrderbook(orderbookParameter,"upbit"));
+        BalanceParameter balanceParameter = BalanceParameter.builder()
+                .apiKey(apiKey).secretKey(secretKey).currency("ETH").payment("BTC").build();
 
-
+        System.out.println(reflectionMethod.getBalance(balanceParameter,"upbit"));
     }
 
 

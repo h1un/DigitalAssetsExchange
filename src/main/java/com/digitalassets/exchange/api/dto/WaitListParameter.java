@@ -8,7 +8,9 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class OrderbookParameter {
+public class WaitListParameter {
     String currency;
     String payment;
+    String apiKey;
+    String secretKey;
 }
