@@ -46,7 +46,7 @@ public class UpbitService {
         return String.valueOf(upbitWebClient.getPublic(TRADE_URI, params).block());
     }
 
-    public String getBalance(BalanceParameter balanceParameter) {
+    public String getBalance(Parameter.Balance balanceParameter) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("market", balanceParameter.getPayment() + HYPHEN_STR + balanceParameter.getCurrency());
         return String.valueOf(upbitWebClient.get(BALANCE_URI, params, balanceParameter.getApiKey(), balanceParameter.getSecretKey()).block());

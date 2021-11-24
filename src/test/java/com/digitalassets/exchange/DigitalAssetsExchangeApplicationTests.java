@@ -2,10 +2,7 @@ package com.digitalassets.exchange;
 
 import com.digitalassets.exchange.api.Exchange;
 import com.digitalassets.exchange.api.ReflectionMethod;
-import com.digitalassets.exchange.api.dto.BalanceParameter;
-import com.digitalassets.exchange.api.dto.OrderbookParameter;
-import com.digitalassets.exchange.api.dto.TickerParameter;
-import com.digitalassets.exchange.api.dto.TradeParameter;
+import com.digitalassets.exchange.api.dto.*;
 import com.digitalassets.exchange.api.upbit.UpbitWebClient;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -121,7 +118,7 @@ class DigitalAssetsExchangeApplicationTests {
 //
 //        System.out.println(reflectionMethod.getTrade(tradeParameter,"upbit"));
 
-        BalanceParameter balanceParameter = BalanceParameter.builder()
+        Parameter.Balance balanceParameter = Parameter.Balance.builder()
                 .apiKey(apiKey).secretKey(secretKey).currency("ETH").payment("BTC").build();
 
         System.out.println(reflectionMethod.getBalance(balanceParameter,"upbit"));
