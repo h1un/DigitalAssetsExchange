@@ -46,13 +46,13 @@ public class ReflectionMethod {
     }
 
     @SneakyThrows
-    public String getBalance(Parameter.Balance balanceParameter, String site) {
+    public String getBalance(BalanceParameter balanceParameter, String site) {
 
         Exchange service = Exchange.getService(site);
         Class<?> exchangeService = Class.forName("com.digitalassets.exchange.api." + service.getExchangeName() + "." + service.getServiceName());
         Constructor<?> constructor = exchangeService.getConstructor();
         Object o = constructor.newInstance();
-        Method method = exchangeService.getMethod("getBalance", Parameter.Balance.class);
+        Method method = exchangeService.getMethod("getBalance", BalanceParameter.class);
 
         return method.invoke(o, balanceParameter).toString();
     }
