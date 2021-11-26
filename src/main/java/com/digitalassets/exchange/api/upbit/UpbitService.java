@@ -10,9 +10,9 @@ public class UpbitService {
     private static final String ORDERBOOK_URI = "/v1/orderbook";
     private static final String TICKER_URI = "/v1/ticker";
     private static final String TRADE_URI = "/v1/trades";
-    private static final String BALANCE_URI = "/v1/orders/chance";
     private static final String ORDER_URI = "/v1/order";
     private static final String ORDERS_URI = "/v1/orders";
+    private static final String ORDERS_CHANCE_URI = "/v1/orders/chance";
 
     private static final String ASK_STR = "ask";
     private static final String BID_STR = "bid";
@@ -24,9 +24,10 @@ public class UpbitService {
 
     private final UpbitWebClient upbitWebClient;
 
-    public UpbitService() {
-        upbitWebClient = new UpbitWebClient();
+    public UpbitService(UpbitWebClient upbitWebClient) {
+        this.upbitWebClient = upbitWebClient;
     }
+
 
     public String getOrderbook(OrderbookParameter orderbookParameter) {
         HashMap<String, Object> params = new HashMap<>();
@@ -49,7 +50,7 @@ public class UpbitService {
     public String getBalance(BalanceParameter balanceParameter) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("market", balanceParameter.getPayment() + HYPHEN_STR + balanceParameter.getCurrency());
-        return String.valueOf(upbitWebClient.get(BALANCE_URI, params, balanceParameter.getApiKey(), balanceParameter.getSecretKey()).block());
+        return String.valueOf(upbitWebClient.get(ORDERS_CHANCE_URI, params, balanceParameter.getApiKey(), balanceParameter.getSecretKey()).block());
     }
 
     public String orderLimitBid(OrderParameter orderParameter) {

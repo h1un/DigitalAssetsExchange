@@ -6,14 +6,16 @@ import lombok.SneakyThrows;
 import java.util.Arrays;
 @Getter
 public enum Exchange {
-    UPBIT("upbit", "UpbitService");
+    UPBIT("upbit", "UpbitService","UpbitWebClient");
 
     private final String exchangeName;
     private final String serviceName;
+    private final String webClientName;
 
-    Exchange(String exchangeName, String serviceName) {
+    Exchange(String exchangeName, String serviceName, String webClientName) {
         this.exchangeName = exchangeName;
         this.serviceName = serviceName;
+        this.webClientName = webClientName;
     }
 
     @SneakyThrows

@@ -1,6 +1,7 @@
 package com.digitalassets.exchange.api;
 
 import com.digitalassets.exchange.api.dto.*;
+import com.digitalassets.exchange.api.upbit.UpbitWebClient;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,9 @@ public class ReflectionMethod {
 
         Exchange service = Exchange.getService(site);
         Class<?> exchangeService = Class.forName("com.digitalassets.exchange.api." + service.getExchangeName() + "." + service.getServiceName());
-        Constructor<?> constructor = exchangeService.getConstructor();
-        Object o = constructor.newInstance();        //생성자 주입
+
         Method method = exchangeService.getMethod("getOrderbook", OrderbookParameter.class);
-        return method.invoke(o, orderbookParameter).toString();
+        return method.invoke(exchangeService.newInstance(), orderbookParameter).toString();
     }
 
     @SneakyThrows
