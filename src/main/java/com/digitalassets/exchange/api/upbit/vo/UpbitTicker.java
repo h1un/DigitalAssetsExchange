@@ -2,7 +2,6 @@ package com.digitalassets.exchange.api.upbit.vo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @NoArgsConstructor
 @Getter

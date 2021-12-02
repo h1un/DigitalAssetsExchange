@@ -115,15 +115,15 @@ public class UpbitMapperService {
             List<TradeResponse.TradeData> trades = new ArrayList<>();
 
             Arrays.stream(upbitTrades).forEach(upbitTrade -> {
-                TradeResponse.TradeData trade =  TradeResponse.TradeData.builder()
+                TradeResponse.TradeData trade = TradeResponse.TradeData.builder()
                         .type(upbitTrade.getAsk_bid())
                         .price(upbitTrade.getTrade_price())
                         .volume(upbitTrade.getTrade_volume())
                         .timestamp(ZonedDateTime.parse(upbitTrade.getTimestamp()).toLocalDateTime())
                         .build();
 
-                        trades.add(trade);
-                    });
+                trades.add(trade);
+            });
 
             tradeResponse = TradeResponse.builder()
                     .status(SUCCESS)
@@ -147,14 +147,14 @@ public class UpbitMapperService {
         return tradeResponse;
     }
 
-    public BalanceResponse getBalance (BalanceParameter balanceParameter){
+    public BalanceResponse getBalance(BalanceParameter balanceParameter) {
 
         String result = upbitService.getBalance(balanceParameter);
 
         BalanceResponse balanceResponse = null;
 
         try {
-            UpbitOrderChance upbitOrderChance = objectMapper.readValue(result,UpbitOrderChance.class);
+            UpbitOrderChance upbitOrderChance = objectMapper.readValue(result, UpbitOrderChance.class);
 
             BalanceResponse.BalanceData askBalance = BalanceResponse.BalanceData.builder()
                     .currency(upbitOrderChance.getAsk_account().getCurrency())
@@ -200,7 +200,7 @@ public class UpbitMapperService {
         try {
             UpbitOrderList[] upbitOrderLists = objectMapper.readValue(result, UpbitOrderList[].class);
 
-            List<WaitListResponse.WaitListData> waitListDataList = new ArrayList<>();
+            List<WaitListResponse.WaitListData> waitListList = new ArrayList<>();
 
 
             Arrays.stream(upbitOrderLists).forEach(upbitOrderList -> {
@@ -212,12 +212,12 @@ public class UpbitMapperService {
                         .timestamp(ZonedDateTime.parse(upbitOrderList.getCreated_at()).toLocalDateTime())
                         .build();
 
-                waitListDataList.add(waitListData);
+                waitListList.add(waitListData);
             });
 
             waitListResponse = WaitListResponse.builder()
                     .status(SUCCESS)
-                    .waitListData(waitListDataList)
+                    .waitListData(waitListList)
                     .build();
 
         } catch (JsonProcessingException e) {

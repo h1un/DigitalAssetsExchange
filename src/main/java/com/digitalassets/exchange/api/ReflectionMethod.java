@@ -1,7 +1,6 @@
 package com.digitalassets.exchange.api;
 
 import com.digitalassets.exchange.api.dto.*;
-import com.digitalassets.exchange.api.upbit.UpbitWebClient;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 

@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.util.Arrays;
+
 @Getter
 public enum Exchange {
-    UPBIT("upbit", "UpbitService","UpbitWebClient");
+    UPBIT("upbit", "UpbitService", "UpbitWebClient");
 
     private final String exchangeName;
     private final String serviceName;
