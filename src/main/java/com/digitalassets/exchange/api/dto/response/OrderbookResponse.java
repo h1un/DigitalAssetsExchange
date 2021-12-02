@@ -22,6 +22,6 @@ public class OrderbookResponse {
     @Builder
     public static class OrderbookData {
         String price;
-        String units;
+        String volume;
     }
 }

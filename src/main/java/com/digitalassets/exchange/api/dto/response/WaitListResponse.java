@@ -10,22 +10,23 @@ import java.util.List;
 @Builder
 @Getter
 @ToString
-public class TradeResponse {
+public class WaitListResponse {
 
     String status;
     String message;
-    String currency;
-    String payment;
-    List<TradeData> trade;
+    List<WaitListData> waitListData;
 
-    @ToString
     @Getter
     @Builder
-    public static class TradeData {
+    @ToString
+    public static class WaitListData {
+        String orderId;
         String price;
         String volume;
+        String remainingVolume;
         LocalDateTime timestamp;
         String type;
+        String currency;
+        String payment;
     }
-
 }

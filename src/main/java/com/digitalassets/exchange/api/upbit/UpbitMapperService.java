@@ -1,18 +1,13 @@
 package com.digitalassets.exchange.api.upbit;
 
-import com.digitalassets.exchange.api.dto.BalanceParameter;
-import com.digitalassets.exchange.api.dto.OrderbookParameter;
-import com.digitalassets.exchange.api.dto.TickerParameter;
-import com.digitalassets.exchange.api.dto.TradeParameter;
-import com.digitalassets.exchange.api.dto.response.BalanceResponse;
-import com.digitalassets.exchange.api.dto.response.OrderbookResponse;
-import com.digitalassets.exchange.api.dto.response.TickerResponse;
-import com.digitalassets.exchange.api.dto.response.TradeResponse;
+import com.digitalassets.exchange.api.dto.*;
+import com.digitalassets.exchange.api.dto.response.*;
 import com.digitalassets.exchange.api.upbit.vo.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,11 +71,11 @@ public class UpbitMapperService {
                     .forEach(orderbookUnits -> {
                         OrderbookResponse.OrderbookData ask = OrderbookResponse.OrderbookData.builder()
                                 .price(orderbookUnits.getAsk_price())
-                                .units(orderbookUnits.getAsk_size())
+                                .volume(orderbookUnits.getAsk_size())
                                 .build();
                         OrderbookResponse.OrderbookData bid = OrderbookResponse.OrderbookData.builder()
                                 .price(orderbookUnits.getBid_price())
-                                .units(orderbookUnits.getBid_size()).build();
+                                .volume(orderbookUnits.getBid_size()).build();
                         asks.add(ask);
                         bids.add(bid);
                     });
@@ -123,8 +118,8 @@ public class UpbitMapperService {
                 TradeResponse.TradeData trade =  TradeResponse.TradeData.builder()
                         .type(upbitTrade.getAsk_bid())
                         .price(upbitTrade.getTrade_price())
-                        .units(upbitTrade.getTrade_volume())
-                        .timestamp(upbitTrade.getTimestamp())
+                        .volume(upbitTrade.getTrade_volume())
+                        .timestamp(ZonedDateTime.parse(upbitTrade.getTimestamp()).toLocalDateTime())
                         .build();
 
                         trades.add(trade);
@@ -134,7 +129,7 @@ public class UpbitMapperService {
                     .status(SUCCESS)
                     .currency(tradeParameter.getCurrency())
                     .payment(tradeParameter.getPayment())
-                    .tradeData(trades)
+                    .trade(trades)
                     .build();
         } catch (JsonProcessingException e) {
             try {
@@ -156,18 +151,87 @@ public class UpbitMapperService {
 
         String result = upbitService.getBalance(balanceParameter);
 
+        BalanceResponse balanceResponse = null;
+
         try {
             UpbitOrderChance upbitOrderChance = objectMapper.readValue(result,UpbitOrderChance.class);
 
-            System.out.println(upbitOrderChance);
+            BalanceResponse.BalanceData askBalance = BalanceResponse.BalanceData.builder()
+                    .currency(upbitOrderChance.getAsk_account().getCurrency())
+                    .balance(upbitOrderChance.getAsk_account().getBalance())
+                    .locked(upbitOrderChance.getAsk_account().getLocked())
+                    .total("")
+                    .build();
+            BalanceResponse.BalanceData bidBalance = BalanceResponse.BalanceData.builder()
+                    .currency(upbitOrderChance.getBid_account().getCurrency())
+                    .balance(upbitOrderChance.getBid_account().getBalance())
+                    .locked(upbitOrderChance.getBid_account().getLocked())
+                    .total("")
+                    .build();
+
+
+            balanceResponse = BalanceResponse.builder()
+                    .status(SUCCESS)
+                    .askBalance(askBalance)
+                    .bidBalance(bidBalance)
+                    .build();
+
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            try {
+                UpbitError upbitError = objectMapper.readValue(result, UpbitError.class);
+                balanceResponse = BalanceResponse.builder()
+                        .status(upbitError.getError().getName())
+                        .message(upbitError.getError().getMessage())
+                        .build();
+            } catch (JsonProcessingException jsonProcessingException) {
+                jsonProcessingException.printStackTrace();
+            }
         }
 
 
-        return null;
+        return balanceResponse;
 
 
+    }
+
+    public WaitListResponse getWaitList(WaitListParameter waitListParameter) {
+        String result = upbitService.getWaitList(waitListParameter);
+        WaitListResponse waitListResponse = null;
+        try {
+            UpbitOrderList[] upbitOrderLists = objectMapper.readValue(result, UpbitOrderList[].class);
+
+            List<WaitListResponse.WaitListData> waitListDataList = new ArrayList<>();
+
+
+            Arrays.stream(upbitOrderLists).forEach(upbitOrderList -> {
+                WaitListResponse.WaitListData waitListData = WaitListResponse.WaitListData.builder()
+                        .orderId(upbitOrderList.getUuid())
+                        .price(upbitOrderList.getPrice())
+                        .volume(upbitOrderList.getVolume())
+                        .remainingVolume(upbitOrderList.getRemaining_volume())
+                        .timestamp(ZonedDateTime.parse(upbitOrderList.getCreated_at()).toLocalDateTime())
+                        .build();
+
+                waitListDataList.add(waitListData);
+            });
+
+            waitListResponse = WaitListResponse.builder()
+                    .status(SUCCESS)
+                    .waitListData(waitListDataList)
+                    .build();
+
+        } catch (JsonProcessingException e) {
+            try {
+                UpbitError upbitError = objectMapper.readValue(result, UpbitError.class);
+                waitListResponse = WaitListResponse.builder()
+                        .status(upbitError.getError().getName())
+                        .message(upbitError.getError().getMessage())
+                        .build();
+            } catch (JsonProcessingException jsonProcessingException) {
+                jsonProcessingException.printStackTrace();
+            }
+        }
+        return waitListResponse;
     }
 
 }
